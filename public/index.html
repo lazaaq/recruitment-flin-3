@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>All Leads</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background: #eee; }
+  </style>
+</head>
+<body>
+
+  <!-- Reuse the same navbar here -->
+  <nav id="navbar" style="margin-bottom: 20px;">
+    <a href="/store.html">Submit Lead</a> |
+    <a href="/index.html">View Leads</a> |
+    <a href="/login.html" id="loginLink">Login</a>
+    <span id="logoutSection" style="display:none;">
+      | <button id="logoutBtn">Logout</button>
+    </span>
+  </nav>
+
+  <h2>All Submitted Leads</h2>
+  <table id="leadsTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Loan Type</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const token = localStorage.getItem('jwtToken');
+    const authLinks = document.getElementById('authLinks');
+    const guestLinks = document.getElementById('guestLinks');
+    if (!token) {
+      alert('You must be logged in to view this page.');
+      window.location.href = '/login.html';
+    }
+
+    fetch('/leads', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const tableBody = document.querySelector('#leadsTable tbody');
+      data.forEach(lead => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${lead.name}</td>
+          <td>${lead.phone}</td>
+          <td>${lead.email}</td>
+          <td>${lead.loanType}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    })
+    .catch(err => {
+      alert('Failed to load leads.');
+      console.error(err);
+    });
+
+    // Navbar script (you can reuse this)
+    const logoutBtn = document.getElementById('logoutBtn');
+    const logoutSection = document.getElementById('logoutSection');
+    const loginLink = document.getElementById('loginLink');
+
+    if (token) {
+      logoutSection.style.display = 'inline';
+      loginLink.style.display = 'none';
+    }
+
+    logoutBtn?.addEventListener('click', () => {
+      localStorage.removeItem('jwtToken');
+      window.location.href = '/login.html';
+    });
+  </script>
+
+</body>
+</html>

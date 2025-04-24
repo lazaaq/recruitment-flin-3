@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; margin: 50px auto; }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; }
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h2>Login</h2>
+
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Username" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const msg = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.token) {
+          // Save token first
+          localStorage.setItem('jwtToken', data.token);
+
+          // Ensure redirect happens after token is saved
+          setTimeout(() => {
+            window.location.href = '/index.html'; // or wherever
+          }, 100); // small delay to be extra safe
+        } else {
+          alert('Login failed');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

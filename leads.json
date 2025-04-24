@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "New Name",
+    "phone": "1234567890",
+    "email": "newemail@gmail.com",
+    "loanType": "Personal"
+  },
+  {
+    "id": 2,
+    "name": "lana",
+    "phone": "123",
+    "email": "lana@gmail.com",
+    "loanType": "Business"
+  }
+]
