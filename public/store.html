@@ -68,8 +68,11 @@
     const authLinks = document.getElementById('authLinks');
     const guestLinks = document.getElementById('guestLinks');
     if (!token) {
-      alert('You must be logged in to view this page.');
       window.location.href = '/login.html';
+    }
+    if (token) {
+      logoutSection.style.display = 'inline';
+      loginLink.style.display = 'none';
     }
     const form = document.getElementById('leadForm');
     const msg = document.getElementById('responseMsg');
