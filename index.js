@@ -9,7 +9,7 @@ const app = express();
 const PORT = 3003;
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Dummy user (replace this with a real DB in production)
 const user = {
