@@ -1,0 +1,107 @@
+{
+    "info": {
+      "name": "Recruitment FLIN 3",
+      "description": "API documentation for Lead Management System. Built with Node.js (Express).",
+      "version": "1.0.0"
+    },
+    "endpoints": [
+        {
+            "name": "Login User",
+            "method": "POST",
+            "url": "/login",
+            "description": "Authenticate user and return JWT token.",
+            "request_body": {
+              "Content-Type": "application/json",
+              "example": {
+                "username": "admin",
+                "password": "password123"
+              }
+            },
+            "responses": [
+              {
+                "status": 200,
+                "description": "Login successful",
+                "example": {
+                    "token": "string"
+                }
+              },
+              {
+                "status": 401,
+                "description": "Unauthorized - Invalid credentials"
+              }
+            ]
+          },
+        {
+        "name": "Submit Lead",
+        "method": "POST",
+        "url": "/leads",
+        "description": "Accepts and stores user inquiry including name, phone number, email, and loan type.",
+        "headers": {
+          "Authorization": "Bearer jwt-token-string"
+        },
+        "request_body": {
+          "Content-Type": "application/json",
+          "example": {
+            "name": "string",
+            "phone": "string",
+            "email": "string",
+            "loanType": "string"
+          }
+        },
+        "responses": [
+          {
+            "status": 201,
+            "description": "Lead submitted successfully",
+            "example": {
+              "message": "Lead saved successfully",
+              "lead": {
+                "id": "integer",
+                "name": "string",
+                "phone": "string",
+                "email": "string",
+                "loanType": "string"
+              }
+            }
+          },
+          {
+            "status": 400,
+            "description": "Bad Request - Invalid token"
+          }
+        ]
+      },
+      {
+        "name": "Get Leads",
+        "method": "GET",
+        "url": "/leads",
+        "description": "Retrieve all stored leads. This route is protected and requires authentication.",
+        "headers": {
+          "Authorization": "Bearer jwt-token-string"
+        },
+        "responses": [
+          {
+            "status": 200,
+            "description": "Leads fetched successfully",
+            "example": [
+              {
+                "name": "John Doe",
+                "phone": "123456789",
+                "email": "john@example.com",
+                "loanType": "Home Loan"
+              },
+              {
+                "name": "Jane Smith",
+                "phone": "987654321",
+                "email": "jane@example.com",
+                "loanType": "Car Loan"
+              }
+            ]
+          },
+          {
+            "status": 401,
+            "description": "Unauthorized - Missing or invalid authentication token"
+          }
+        ]
+      }
+    ]
+  }
+  
